@@ -1,0 +1,95 @@
+:root {
+    --main-color-1: #172544;
+    --main-color-2: #445a99;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: minmax(150px, 200px) 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        "header  header  "
+        "sidebar content "
+        "footer  footer  ";
+}
+
+header {
+    background-color: var(--main-color-1);
+    grid-area: header;
+}
+
+.sidebar {
+    background-color: var(--main-color-2);
+    grid-area: sidebar;
+}
+
+.filters, .projects-container, .projects {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-btn, .project-btn, #add-todo-btn {
+    cursor: pointer;
+    padding: 4px 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    margin: 4px 0;
+}
+
+.sidebar-btn, #add-todo-btn {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 6px 8px;
+}
+
+.project-btn {
+    text-align: left;
+    padding: 8px 16px;
+}
+
+.sidebar-btn:hover, .project-btn:hover, #add-todo-btn:hover {
+    background-color: #b6daff;
+}
+
+.selected {
+    background-color: #b6daff;
+    font-weight: bold;
+}
+
+svg {
+    width: 25px;
+    fill: var(--main-color-1);
+}
+
+.projects-container, .filters {
+    margin: 16px 12px;
+}
+
+.project-name-input {
+    border-radius: 8px;
+    border: none;
+    padding: 4px;
+}
+
+.project-name-input:focus {
+    outline: blue solid 2px;
+}
+
+.content {
+    background-color: #8b99fa;
+    grid-area: content;
+}
+
+.footer {
+    background-color: var(--main-color-1);
+    grid-area: footer;
+}
