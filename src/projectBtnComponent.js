@@ -1,3 +1,5 @@
+import DOMHandler from "./domHandler";
+
 const createProjectBtnComponent = (projectName, id) => {
     const projectBtn = document.createElement('button');
     projectBtn.classList.add('project-btn');
@@ -10,6 +12,11 @@ const createProjectBtnComponent = (projectName, id) => {
         }
         e.target.classList.add('selected');
     });
+
+    projectBtn.addEventListener('click', function(e) {
+        DOMHandler.displayTodos(e.target.getAttribute('data-project-id'));
+    });
+
     return projectBtn;
 };
 

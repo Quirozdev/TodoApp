@@ -93,3 +93,12 @@ svg {
     background-color: var(--main-color-1);
     grid-area: footer;
 }
+
+
+.todo-container {
+    display: flex;
+}
+
+.todo-title, .todo-due-date {
+    flex: 1;
+}

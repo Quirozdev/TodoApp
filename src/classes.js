@@ -1,10 +1,10 @@
 export class ToDo {
-    constructor(title, description, dueDate, priority, notes) {
+    constructor(id, title, description, dueDate, priority) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.notes = notes;
         this.checklist = false;
     }
 
@@ -15,7 +15,8 @@ export class ToDo {
 
 
 export class Project {
-    constructor(name) {
+    constructor(id, name) {
+        this.id = id;
         this.name = name;
         this.todos = [];
     }

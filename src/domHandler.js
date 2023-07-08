@@ -1,67 +1,86 @@
 import createProjectHandler from './createProjectHandler';
 import createProjectBtnComponent from './projectBtnComponent';
-import { ToDo } from './classes';
+import createAddTodoForm from './addTodoFormComponent';
+import createSvgElement from "./createSvg";
+import todoComponent from './todoComponent';
 import db from './db';
 
 const DOMHandler = (() => {
-    const content = document.querySelector('.content');
     const projectsContainer = document.querySelector('.projects');
     const addProjectBtn = document.getElementById('add-project-btn');
-    const todosContainer = document.querySelector('.todos-container');
-    const addTodoBtn = document.querySelector('#add-todo-btn');
-    addTodoBtn.style.display = 'none';
+    
 
-    addProjectBtn.addEventListener('click', (e) => {
-        createProjectHandler(e.target);
+    addProjectBtn.addEventListener('click', function(e) {
+        createProjectHandler(this);
     });
 
+    
 
-    const displayTodos = (projectId) => {
-        todosContainer.innerHTML = '';
-        const project = db.getProject(projectId);
+    const generateTodosContainer = (project) => {
+        const todosContainer = document.createElement('div');
+        todosContainer.classList.add('todos-container');
+        todosContainer.setAttribute('data-project-id', project.id);
+
         const projectTodos = project.getTodos();
-        projectTodos.forEach(projectTodo => {
-            const todoContainer = document.createElement('div');
-            todoContainer.classList.add('todo-container');
-            const todoTitle = document.createElement('p');
-            todoTitle.textContent = projectTodo.title;
-
-            todoContainer.appendChild(todoTitle);
+        projectTodos.forEach((projectTodo, todoIndex) => {
+            const todoContainer = todoComponent(projectTodo, todoIndex);
             todosContainer.appendChild(todoContainer);
         });
 
-        const addTodoBtn = document.createElement('button');
-        addTodoBtn.textContent = 'Add Todo';
+        return todosContainer;
     };
 
-    // moverlo a otra parte!!!!!
-    addTodoBtn.addEventListener('click', (e) => {
-        const projectId = document.querySelector('.selected').getAttribute('data-project-id');
+    const createAddTodoBtn = () => {
+        const addTodoBtn = document.createElement('button');
+        addTodoBtn.setAttribute('id', 'add-todo-btn');
+        const addTodoBtnSvg = createSvgElement({
+            viewBox: '0 0 24 24',
+            path: {
+                d: 'M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z'
+            }
+        });
+    
+        const addTodoBtnText = document.createElement('span');
+        addTodoBtnText.textContent = 'Add Todo';
+    
+        addTodoBtn.appendChild(addTodoBtnSvg);
+        addTodoBtn.appendChild(addTodoBtnText);
+    
+        return addTodoBtn;
+    }
+
+    const displayTodos = (projectId) => {
+        const content = document.querySelector('.content');
+        content.innerHTML = '';
+
         const project = db.getProject(projectId);
-        const newTodo = new ToDo('test', 'si', 'aaa', 1, 'wow');
-        project.addTodo(newTodo);
-        db.saveProject(project);
-        displayTodos(projectId);
-        console.log(projectId);
-    })
+
+        const todosContainer = generateTodosContainer(project, projectId);
+
+        const addTodoBtn = createAddTodoBtn();
+        addTodoBtn.addEventListener('click', function(e) {
+            this.style.display = 'none'
+            const addTodoForm = createAddTodoForm();
+            content.appendChild(addTodoForm);
+        });
+
+        const projectTitleElement = document.createElement('h2');
+        projectTitleElement.textContent = project.name;
+        
+        content.appendChild(projectTitleElement);
+        content.appendChild(todosContainer);
+        content.appendChild(addTodoBtn);
+    }
 
     const displayProjects = (projects) => {
         projectsContainer.innerHTML = '';
         projects.forEach((project, index) => {
             const projectBtn = createProjectBtnComponent(project.name, index);
-            projectBtn.addEventListener('click', (e) => {
-                todosContainer.innerHTML = '';
-                const projectTitleElement = document.createElement('h2');
-                projectTitleElement.textContent = project.name;
-                todosContainer.appendChild(projectTitleElement);
-                displayTodos(e.target.getAttribute('data-project-id'));
-                addTodoBtn.style.display = 'block';
-            });
             projectsContainer.appendChild(projectBtn);
         });
     };
 
-    return { displayProjects };
+    return { displayProjects, displayTodos };
 })();
 
 
