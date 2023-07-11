@@ -94,11 +94,116 @@ svg {
     grid-area: footer;
 }
 
-
 .todo-container {
+    position: relative;
+    margin: 12px;
+    border-radius: 8px;
+    gap: 12px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.todo-container:hover {
+    height: 100%;
+    overflow: visible;
+}
+
+.relevant-info-container {
     display: flex;
+    background-color: white;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.description-container {
+    background-color: #f6efed;
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 2;
 }
 
 .todo-title, .todo-due-date {
+    flex: 2;
+}
+
+.todo-priority {
     flex: 1;
+}
+
+.todo-priority {
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+.todo-priority.low {
+    background-color: #20dbc0;
+
+}
+.todo-priority.medium {
+    background-color: #ffc655;
+}
+
+.todo-priority.high {
+    background-color: #e31746;
+}
+
+.todo-description::before {
+    content: 'Description: ';
+    font-weight: bold;
+}
+
+.todo-edit-btn, .todo-delete-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.todo-edit-btn svg, .todo-delete-btn svg {
+    fill: black;
+}
+
+.todo-edit-btn {
+    background-color: yellow;
+}
+.todo-delete-btn {
+    background-color: red;
+}
+
+#add-todo-form {
+    display: grid;
+    padding: 24px;
+    border-radius: 8px;
+    background-color: #96f48b;
+    justify-items: center;
+}
+
+.add-todo-form-btns-container {
+    display: flex;
+    justify-self: normal;
+}
+
+.add-todo-form-btns-container > button {
+    flex: 1;
+    padding: 8px 16px;
+}
+
+#edit-todo-form {
+    z-index: 2;
+    top: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #fffa75;
+    display: grid;
+    justify-items: center;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+:disabled {
+    opacity: 0.7;
 }

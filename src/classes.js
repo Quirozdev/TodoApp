@@ -5,11 +5,11 @@ export class ToDo {
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.checklist = false;
+        this.completed = false;
     }
 
     toggleCompletion() {
-        this.checkList = !this.checkList;
+        this.completed = !this.completed;
     }
 }
 
@@ -21,12 +21,20 @@ export class Project {
         this.todos = [];
     }
 
+    getTodo(todoId) {
+        return this.todos[todoId];
+    }
+
     getTodos() {
         return this.todos;
     }
 
     addTodo(todo) {
         this.todos.push(todo);
+    }
+
+    editTodo(todoId, updatedTodo) {
+        this.todos[todoId] = updatedTodo;
     }
 
     deleteTodo(todoId) {

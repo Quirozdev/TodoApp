@@ -7,11 +7,15 @@ import db from './db';
 
 const DOMHandler = (() => {
     const projectsContainer = document.querySelector('.projects');
-    const addProjectBtn = document.getElementById('add-project-btn');
-    
 
+    const addProjectBtn = document.getElementById('add-project-btn');
     addProjectBtn.addEventListener('click', function(e) {
         createProjectHandler(this);
+    });
+
+    const completedTodosBtn = document.getElementById('completed-todos-btn');
+    completedTodosBtn.addEventListener('click', () => {
+        const projectsWithCompletedTodos = db.getAllCompletedTodosInEachProject();
     });
 
     

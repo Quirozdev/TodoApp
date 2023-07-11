@@ -13,8 +13,18 @@ const eventsHandler = (() => {
             DOMHandler.displayTodos(e.detail.projectId);
         });
 
+        document.addEventListener('todoedited', (e) => {
+            db.updateTodo(e.detail.todo, e.detail.projectId);
+            DOMHandler.displayTodos(e.detail.projectId);
+        });
+
         document.addEventListener('tododeleted', (e) => {
             db.deleteTodo(e.detail.projectId, e.detail.todoId);
+            DOMHandler.displayTodos(e.detail.projectId);
+        });
+
+        document.addEventListener('todochecklistchanged', (e) => {
+            db.changeTodoCompletionState(e.detail.projectId, e.detail.todoId);
             DOMHandler.displayTodos(e.detail.projectId);
         });
     };

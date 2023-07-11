@@ -5,8 +5,13 @@ const createLabelAndInput = (labelText, inputType, inputId, inputName, required)
     label.textContent = labelText;
     label.setAttribute('for', inputId);
 
-    const input = document.createElement('input');
-    input.setAttribute('type', inputType);
+    let input;
+    if (inputType !== 'textarea') {
+        input = document.createElement('input');
+        input.setAttribute('type', inputType);
+    } else {
+        input = document.createElement('textarea');
+    }
     input.setAttribute('id', inputId);
     input.setAttribute('name', inputName);
     if (required) input.setAttribute('required', '');
@@ -14,26 +19,31 @@ const createLabelAndInput = (labelText, inputType, inputId, inputName, required)
     return [label, input];
 }
 
-const createPrioritySelect = () => {
+const createPrioritySelect = (defaultOption) => {
     const prioritySelect = document.createElement('select');
     prioritySelect.setAttribute('id', 'priority');
     prioritySelect.setAttribute('name', 'priority');
 
     const lowOption = document.createElement('option');
     lowOption.textContent = 'Low';
+    lowOption.classList.add('low');
     lowOption.setAttribute('value', 'low');
 
     const mediumOption = document.createElement('option');
     mediumOption.textContent = 'Medium';
+    mediumOption.classList.add('medium');
     mediumOption.setAttribute('value', 'medium');
 
     const highOption = document.createElement('option');
     highOption.textContent = 'High';
-    lowOption.setAttribute('value', 'high');
+    highOption.classList.add('high');
+    highOption.setAttribute('value', 'high');
 
     prioritySelect.appendChild(lowOption);
     prioritySelect.appendChild(mediumOption);
     prioritySelect.appendChild(highOption);
+
+    prioritySelect.querySelector(`.${defaultOption.toLowerCase()}`).setAttribute('selected', '');
 
     return prioritySelect;
 }
@@ -50,7 +60,7 @@ const createFormButton = (buttonText, buttonId, buttonType, events) => {
 }
 
 const getLatestTodoId = () => {
-    return document.querySelectorAll('.todo-container');
+    return document.querySelectorAll('.todo-container').length;
 }
 
 const addTodoEvent = (addTodoForm) => {
@@ -82,9 +92,16 @@ const createAddTodoForm = () => {
     addTodoEvent(addTodoForm);
 
     const [ todoTitleLabel, todoTitleInput ] = createLabelAndInput('Title', 'text', 'title', 'title', true);
-    const [ todoDescLabel, todoDescInput ] = createLabelAndInput('Description', 'text', 'description', 'description', true);
+    const [ todoDescLabel, todoDescInput ] = createLabelAndInput('Description', 'textarea', 'description', 'description', true);
     const [ todoDueDateLabel, todoDueDateInput ] = createLabelAndInput('Due Date', 'date', 'due-date', 'due-date', true);
-    const prioritySelect = createPrioritySelect();
+    const priorityLabel = document.createElement('label');
+    priorityLabel.textContent = 'Priority';
+    priorityLabel.setAttribute('for', 'priority');
+    const prioritySelect = createPrioritySelect('low');
+    
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('add-todo-form-btns-container');
+
     const addBtn = createFormButton('Add', 'create-todo', 'submit', {});
     const cancelBtn = createFormButton('Cancel', 'cancel-btn', 'button', {
         click: function(e) {
@@ -99,11 +116,14 @@ const createAddTodoForm = () => {
     addTodoForm.appendChild(todoDescInput);
     addTodoForm.appendChild(todoDueDateLabel);
     addTodoForm.appendChild(todoDueDateInput);
+    addTodoForm.appendChild(priorityLabel);
     addTodoForm.appendChild(prioritySelect);
-    addTodoForm.appendChild(addBtn);
-    addTodoForm.appendChild(cancelBtn);
+    buttonsContainer.appendChild(addBtn);
+    buttonsContainer.appendChild(cancelBtn);
+    addTodoForm.appendChild(buttonsContainer);
 
     return addTodoForm;
 }
 
+export { createLabelAndInput, createPrioritySelect, createFormButton };
 export default createAddTodoForm;

@@ -1,14 +1,39 @@
 import createSvgElement from "./createSvg";
+import createEditTodoForm from "./editTodoFormComponent";
+import { titleCase } from "./utils";
 
 const todoComponent = (todo, todoId) => {
     const todoContainer = document.createElement('div');
     todoContainer.classList.add('todo-container');
     todoContainer.setAttribute('data-todo-id', todoId);
 
+    const todoCheckList = document.createElement('input');
+    todoCheckList.setAttribute('type', 'checkbox');
+    todoCheckList.classList.add('todo-check-list');
+    if (todo.completed) {
+        todoCheckList.checked = true;
+    }
+    todoCheckList.addEventListener('change', function(e) {
+        const todoId = this.closest('.todo-container').getAttribute('data-todo-id');
+        const projectId = this.closest('.todos-container').getAttribute('data-project-id');
+        console.log(todoId, projectId);
+        const todoCheckListEvent = new CustomEvent('todochecklistchanged', {
+            detail: {
+                projectId,
+                todoId
+            }
+        });
+        document.dispatchEvent(todoCheckListEvent);
+    });
 
     const todoTitle = document.createElement('p');
     todoTitle.textContent = todo.title;
     todoTitle.classList.add('todo-title');
+
+    const todoPriority = document.createElement('p');
+    todoPriority.textContent = titleCase(todo.priority);
+    todoPriority.classList.add('todo-priority');
+    todoPriority.classList.add(todo.priority);
 
     const todoDescription = document.createElement('p');
     todoDescription.textContent = todo.description;
@@ -28,6 +53,14 @@ const todoComponent = (todo, todoId) => {
     const editSvg = createSvgElement(editSvgObj);
     todoEditBtn.appendChild(editSvg);
     todoEditBtn.classList.add('todo-edit-btn');
+    todoEditBtn.addEventListener('click', function(e) {
+        const alreadyAEditForm = document.getElementById('edit-todo-form');
+        if (alreadyAEditForm) {
+            alreadyAEditForm.remove();
+        }
+        const editTodoForm = createEditTodoForm(todoId, this);
+        todoContainer.appendChild(editTodoForm);
+    });
 
     const todoDeleteBtn = document.createElement('button');
     const deleteSvgObj = {
@@ -51,11 +84,23 @@ const todoComponent = (todo, todoId) => {
         document.dispatchEvent(todoDeletedEvent);
     });
 
+    const relevantInfoContainer = document.createElement('div');
+    relevantInfoContainer.classList.add('relevant-info-container');
 
-    todoContainer.appendChild(todoTitle);
-    todoContainer.appendChild(todoDueDate);
-    todoContainer.appendChild(todoEditBtn);
-    todoContainer.appendChild(todoDeleteBtn);
+    const descriptionContainer = document.createElement('div');
+    descriptionContainer.classList.add('description-container');
+
+    relevantInfoContainer.appendChild(todoCheckList);
+    relevantInfoContainer.appendChild(todoTitle);
+    relevantInfoContainer.appendChild(todoPriority);
+    relevantInfoContainer.appendChild(todoDueDate);
+    relevantInfoContainer.appendChild(todoEditBtn);
+    relevantInfoContainer.appendChild(todoDeleteBtn);
+
+    descriptionContainer.appendChild(todoDescription);
+
+    todoContainer.appendChild(relevantInfoContainer);
+    todoContainer.appendChild(descriptionContainer);
 
     return todoContainer;
 };
