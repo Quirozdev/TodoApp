@@ -2,36 +2,39 @@ import { createLabelAndInput, createPrioritySelect, createFormButton } from "./a
 import db from "./db";
 import { ToDo } from "./classes";
 
-const editTodoEvent = (editTodoForm, todoId) => {
+const editTodoEvent = (editTodoForm) => {
     editTodoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log(todoId);
-        const todoData = new FormData(editTodoForm);
-        const newTodo = new ToDo(
-            todoId,
-            todoData.get('title'),
-            todoData.get('description'),
-            todoData.get('due-date'),
-            todoData.get('priority'),
-        );
-        const projectId = document.querySelector('.selected').getAttribute('data-project-id');
+        const projectId = editTodoForm.closest('.todos-container').getAttribute('data-project-id');
+        const todoId = editTodoForm.closest('.todo-container').getAttribute('data-todo-id');
+
+        const formData = new FormData(editTodoForm);
+        const todoData = {
+            id: todoId,
+            title: formData.get('title'),
+            description: formData.get('description'),
+            dueDate: formData.get('due-date'),
+            priority: formData.get('priority'),
+            completed: false,
+            projectId: projectId
+        };
+
         const todoEditedEvent = new CustomEvent('todoedited', {
             detail: {
-                todo: newTodo,
-                projectId: projectId
+                todoData: todoData
             }
         });
         document.dispatchEvent(todoEditedEvent);
     });
 }
 
-const createEditTodoForm = (todoId, todoEditBtn) => {
+const createEditTodoForm = (todo) => {
     const editTodoForm = document.createElement('form');
     editTodoForm.setAttribute('id', 'edit-todo-form');
-    editTodoEvent(editTodoForm, todoId);
+    editTodoEvent(editTodoForm);
 
-    const projectId = todoEditBtn.closest('.todos-container').getAttribute('data-project-id');
-    const currentTodo = db.obtainTodo(projectId, todoId);
+    console.log(todo.projectId, todo.id);
+    const currentTodo = db.obtainTodo(todo.projectId, todo.id);
 
     const [ todoTitleLabel, todoTitleInput ] = createLabelAndInput('Title', 'text', 'title', 'title', true);
     todoTitleInput.value = currentTodo.title;

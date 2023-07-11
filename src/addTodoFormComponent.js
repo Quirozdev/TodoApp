@@ -59,27 +59,25 @@ const createFormButton = (buttonText, buttonId, buttonType, events) => {
     return formBtn;
 }
 
-const getLatestTodoId = () => {
-    return document.querySelectorAll('.todo-container').length;
-}
-
 const addTodoEvent = (addTodoForm) => {
+    // get the id/index of the project in which the todo is going to be created
+    const projectId = document.querySelector('.selected').getAttribute('data-project-id');
+
     addTodoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const todoData = new FormData(addTodoForm);
-        const newTodo = new ToDo(
-            getLatestTodoId(),
-            todoData.get('title'),
-            todoData.get('description'),
-            todoData.get('due-date'),
-            todoData.get('priority'),
-        );
-        // get the id/index of the project in which the todo is going to be created
-        const projectId = document.querySelector('.selected').getAttribute('data-project-id');
+        const formData = new FormData(addTodoForm);
+        const todoData = {
+            title: formData.get('title'),
+            description: formData.get('description'),
+            dueDate: formData.get('due-date'),
+            priority: formData.get('priority'),
+            completed: false,
+            projectId: projectId
+        };
+        
         const todoCreatedEvent = new CustomEvent('todocreated', {
             detail: {
-                todo: newTodo,
-                projectId: projectId
+                todoData: todoData
             }
         });
         document.dispatchEvent(todoCreatedEvent);

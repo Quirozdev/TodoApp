@@ -3,10 +3,10 @@ import { Project, ToDo } from "./classes";
 class DB {
     constructor() {
         // convert all json objects into the corresponding class objects, so they get their methods
-        this.projects = localStorage.getItem('db') ? JSON.parse(localStorage.getItem('db')).map((project, index) => {
-            const newProject = new Project(index, project.name);
+        this.projects = localStorage.getItem('db') ? JSON.parse(localStorage.getItem('db')).map((project) => {
+            const newProject = new Project(project.name);
             newProject.todos = project.todos.map(todo => {
-                return new ToDo(todo.id, todo.title, todo.description, todo.dueDate, todo.priority, todo.completed);
+                return new ToDo(todo.id, todo.title, todo.description, todo.dueDate, todo.priority, todo.completed, newProject.id);
             });
             return newProject;
         }) : [];
@@ -18,6 +18,10 @@ class DB {
 
     getProject(index) {
         return this.projects[index];
+    }
+
+    getIndexForNewTodo(projectId) {
+        return this.getProject(projectId).getTodos().length;
     }
 
     obtainTodo(projectId, todoId) {
@@ -34,13 +38,13 @@ class DB {
         this.updateDatabase();
     }
 
-    updateTodo(todo, projectId) {
-        this.projects[projectId].editTodo(todo.id, todo);
+    updateTodo(todo) {
+        this.projects[todo.projectId].editTodo(todo.id, todo);
         this.updateDatabase();
     }
 
-    saveTodo(todo, projectId) {
-        this.projects[projectId].addTodo(todo);
+    saveTodo(todo) {
+        this.projects[todo.projectId].addTodo(todo);
         this.updateDatabase();
     }
 
@@ -55,13 +59,14 @@ class DB {
     }
 
     getAllCompletedTodosInEachProject() {
-        return this.projects.filter(project => {
-           const completedTodos = project.filter(todo => {
-                return todo.completed;
-            });
-            // return only the projects which have completed todos
-            return completedTodos.length !== 0;
-        });
+        const projectsCopy = [...this.getAllProjects()];
+        return projectsCopy.reduce((completedTodosObj, currentProject) => {
+            const completedTodos = currentProject.getCompletedTodos();
+            if (completedTodos.length !== 0) {
+                completedTodosObj[currentProject.id] = currentProject.getCompletedTodos();
+            }
+            return completedTodosObj;
+        }, {});
     }
 }
 

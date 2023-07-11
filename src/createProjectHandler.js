@@ -1,9 +1,5 @@
 import { Project } from "./classes";
 
-const getLatestProjectId = () => {
-    return document.querySelectorAll('.project-btn').length;
-}
-
 const createProjectHandler = (addProjectBtn) => {
     const projectsContainer = document.querySelector('.projects');
 
@@ -21,7 +17,7 @@ const createProjectHandler = (addProjectBtn) => {
             if (projectName) {
                 const projectCreatedEvent = new CustomEvent('projectcreated', {
                     detail: {
-                        project: new Project(getLatestProjectId(), projectName),
+                        project: new Project(projectName),
                     }
                 });
                 document.dispatchEvent(projectCreatedEvent);

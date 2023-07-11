@@ -2,10 +2,10 @@ import createSvgElement from "./createSvg";
 import createEditTodoForm from "./editTodoFormComponent";
 import { titleCase } from "./utils";
 
-const todoComponent = (todo, todoId) => {
+const todoComponent = (todo) => {
     const todoContainer = document.createElement('div');
     todoContainer.classList.add('todo-container');
-    todoContainer.setAttribute('data-todo-id', todoId);
+    todoContainer.setAttribute('data-todo-id', todo.id);
 
     const todoCheckList = document.createElement('input');
     todoCheckList.setAttribute('type', 'checkbox');
@@ -13,14 +13,12 @@ const todoComponent = (todo, todoId) => {
     if (todo.completed) {
         todoCheckList.checked = true;
     }
+
     todoCheckList.addEventListener('change', function(e) {
-        const todoId = this.closest('.todo-container').getAttribute('data-todo-id');
-        const projectId = this.closest('.todos-container').getAttribute('data-project-id');
-        console.log(todoId, projectId);
         const todoCheckListEvent = new CustomEvent('todochecklistchanged', {
             detail: {
-                projectId,
-                todoId
+                projectId: todo.projectId,
+                todoId: todo.id
             }
         });
         document.dispatchEvent(todoCheckListEvent);
@@ -58,7 +56,7 @@ const todoComponent = (todo, todoId) => {
         if (alreadyAEditForm) {
             alreadyAEditForm.remove();
         }
-        const editTodoForm = createEditTodoForm(todoId, this);
+        const editTodoForm = createEditTodoForm(todo);
         todoContainer.appendChild(editTodoForm);
     });
 
@@ -74,11 +72,10 @@ const todoComponent = (todo, todoId) => {
     todoDeleteBtn.classList.add('todo-delete-btn');
     todoDeleteBtn.addEventListener('click', function(e) {
         const projectId = this.closest('.todos-container').getAttribute('data-project-id');
-        const todoId = this.closest('.todo-container').getAttribute('data-todo-id');
         const todoDeletedEvent = new CustomEvent('tododeleted', {
             detail: {
                 projectId,
-                todoId
+                todoId: todo.id
             }
         });
         document.dispatchEvent(todoDeletedEvent);

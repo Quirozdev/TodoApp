@@ -1,11 +1,13 @@
 export class ToDo {
-    constructor(id, title, description, dueDate, priority) {
+
+    constructor(id, title, description, dueDate, priority, completed, projectId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.completed = false;
+        this.completed = completed;
+        this.projectId = projectId;
     }
 
     toggleCompletion() {
@@ -15,8 +17,11 @@ export class ToDo {
 
 
 export class Project {
-    constructor(id, name) {
-        this.id = id;
+    static autoIncrementId = 0;
+
+    constructor(name) {
+        this.id = this.constructor.autoIncrementId++;
+
         this.name = name;
         this.todos = [];
     }
@@ -27,6 +32,10 @@ export class Project {
 
     getTodos() {
         return this.todos;
+    }
+
+    getCompletedTodos() {
+        return this.todos.filter(todo => todo.completed);
     }
 
     addTodo(todo) {
