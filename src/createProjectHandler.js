@@ -17,7 +17,7 @@ const createProjectHandler = (addProjectBtn) => {
             if (projectName) {
                 const projectCreatedEvent = new CustomEvent('projectcreated', {
                     detail: {
-                        project: new Project(projectName),
+                        projectName: projectName,
                     }
                 });
                 document.dispatchEvent(projectCreatedEvent);

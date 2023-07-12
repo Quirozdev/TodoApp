@@ -27,7 +27,36 @@ const createAddTodoBtn = () => {
     addTodoBtn.appendChild(addTodoBtnText);
 
     return addTodoBtn;
-}
+};
+
+const createDeleteThisProjectBtn = (projectId) => {
+    const deleteThisProjectBtn = document.createElement('button');
+    deleteThisProjectBtn.setAttribute('id', 'delete-this-project-btn');
+    deleteThisProjectBtn.setAttribute('data-project-id', projectId);
+    deleteThisProjectBtn.addEventListener('click', () => {
+        const projectIdToDelete = deleteThisProjectBtn.getAttribute('data-project-id');
+        const projectDeletedEvent = new CustomEvent('projectdeleted', {
+            detail: {
+                projectId: projectIdToDelete
+            }
+        });
+        document.dispatchEvent(projectDeletedEvent);
+    });
+    const deleteThisProjectBtnSvg = createSvgElement({
+        viewBox: '0 0 24 24',
+        path: {
+            d: "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+        }
+    });
+
+    const deleteThisProjectBtnText = document.createElement('span');
+    deleteThisProjectBtnText.textContent = 'Delete this project';
+
+    deleteThisProjectBtn.appendChild(deleteThisProjectBtnSvg);
+    deleteThisProjectBtn.appendChild(deleteThisProjectBtnText);
+
+    return deleteThisProjectBtn;
+};
 
 const createProjectBtnComponent = (project) => {
     const projectBtn = document.createElement('button');
@@ -44,9 +73,11 @@ const createProjectBtnComponent = (project) => {
 
     projectBtn.addEventListener('click', function(e) {
         const addTodoBtn = createAddTodoBtn();
+        const deleteThisProjectBtn = createDeleteThisProjectBtn(project.id);
         DOMHandler.clearContent();
         DOMHandler.displayTodos(project.getTodos(), project.id);
         DOMHandler.insertAddTodoBtn(addTodoBtn);
+        DOMHandler.insertDeleteThisProjectBtn(deleteThisProjectBtn);
     });
 
     return projectBtn;

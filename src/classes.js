@@ -19,10 +19,8 @@ export class ToDo {
 
 
 export class Project {
-    static autoIncrementId = 0;
-
-    constructor(name) {
-        this.id = this.constructor.autoIncrementId++;
+    constructor(id, name) {
+        this.id = id;
 
         this.name = name;
         this.todos = [];
@@ -60,5 +58,10 @@ export class Project {
 
     deleteTodo(todoId) {
         this.todos.splice(todoId, 1);
+        // this is to reassing the ids to each todo, because they are referenced by their index position
+        // in the project array, with their id
+        this.todos.forEach((todo, index) => {
+            todo.id = index;
+        });
     }
 }

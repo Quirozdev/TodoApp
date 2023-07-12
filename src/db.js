@@ -3,8 +3,8 @@ import { Project, ToDo } from "./classes";
 class DB {
     constructor() {
         // convert all json objects into the corresponding class objects, so they get their methods
-        this.projects = localStorage.getItem('db') ? JSON.parse(localStorage.getItem('db')).map((project) => {
-            const newProject = new Project(project.name);
+        this.projects = localStorage.getItem('db') ? JSON.parse(localStorage.getItem('db')).map((project, index) => {
+            const newProject = new Project(index, project.name);
             newProject.todos = project.todos.map(todo => {
                 return new ToDo(todo.id, todo.title, todo.description, todo.dueDate, todo.priority, todo.completed, newProject.id);
             });
@@ -20,6 +20,10 @@ class DB {
         return this.projects[index];
     }
 
+    getIndexForNewProject() {
+        return this.projects.length;
+    }
+
     getIndexForNewTodo(projectId) {
         return this.getProject(projectId).getTodos().length;
     }
@@ -33,8 +37,18 @@ class DB {
     }
 
     saveProject(project) {
-        console.log(`Project ${project.name} saved!`);
         this.projects.push(project);
+        this.updateDatabase();
+        console.log(`Project ${project.name} saved!`);
+    }
+
+    deleteProject(projectId) {
+        this.projects.splice(projectId, 1);
+        // this is to reassing the ids to each poroject, because they are referenced by their index position
+        // in the db array, with their id
+        this.projects.forEach((project, index) => {
+            project.id = index;
+        });
         this.updateDatabase();
     }
 

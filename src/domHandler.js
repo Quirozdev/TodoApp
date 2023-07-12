@@ -61,7 +61,11 @@ const DOMHandler = (() => {
 
     const insertAddTodoBtn = (addTodoBtn) => {
         content.appendChild(addTodoBtn);
-    }
+    };
+
+    const insertDeleteThisProjectBtn = (deleteThisProjectBtn) => {
+        content.appendChild(deleteThisProjectBtn);
+    };
 
     const displayTodos = (todos, projectId) => {
 
@@ -84,7 +88,7 @@ const DOMHandler = (() => {
         });
     };
 
-    return { displayProjects, displayTodos, clearContent, insertAddTodoBtn };
+    return { displayProjects, displayTodos, clearContent, insertAddTodoBtn, insertDeleteThisProjectBtn };
 })();
 
 

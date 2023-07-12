@@ -34,13 +34,24 @@ header {
     flex-direction: column;
 }
 
-.sidebar-btn, .project-btn, #add-todo-btn {
+.sidebar-btn, .project-btn, #add-todo-btn, #delete-this-project-btn {
     cursor: pointer;
     padding: 4px 0;
     background-color: transparent;
     border: none;
     border-radius: 8px;
     margin: 4px 0;
+}
+
+#delete-this-project-btn {
+    background-color: #ff0f61;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+#delete-this-project-btn:hover {
+    background-color: #e31746;
 }
 
 .sidebar-btn, #add-todo-btn {

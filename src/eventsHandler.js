@@ -1,14 +1,21 @@
-import { ToDo } from "./classes";
+import { ToDo, Project } from "./classes";
 import db from "./db";
 import DOMHandler from "./domHandler";
 
 const eventsHandler = (() => {
     const initializeCustomEvents = () => {
         document.addEventListener('projectcreated', (e) => {
-            db.saveProject(e.detail.project);
+            const newProject = new Project(db.getIndexForNewProject(), e.detail.projectName);
+            db.saveProject(newProject);
             DOMHandler.displayProjects(db.getAllProjects());
             // to auto select the newly created project
-            document.querySelector(`[data-project-id="${e.detail.project.id}"]`).click();
+            document.querySelector(`[data-project-id="${newProject.id}"]`).click();
+        });
+
+        document.addEventListener('projectdeleted', (e) => {
+            db.deleteProject(e.detail.projectId);
+            DOMHandler.clearContent();
+            DOMHandler.displayProjects(db.getAllProjects());
         });
 
         document.addEventListener('todocreated', (e) => {
