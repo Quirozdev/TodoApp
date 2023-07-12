@@ -66,6 +66,7 @@ const addTodoEvent = (addTodoForm) => {
     addTodoForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(addTodoForm);
+        console.log(formData.get('due-date'));
         const todoData = {
             title: formData.get('title'),
             description: formData.get('description'),

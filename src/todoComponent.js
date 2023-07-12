@@ -1,6 +1,7 @@
 import createSvgElement from "./createSvg";
 import createEditTodoForm from "./editTodoFormComponent";
 import { titleCase } from "./utils";
+import { format } from "date-fns";
 
 const todoComponent = (todo) => {
     const todoContainer = document.createElement('div');
@@ -38,7 +39,7 @@ const todoComponent = (todo) => {
     todoDescription.classList.add('todo-description');
 
     const todoDueDate = document.createElement('p');
-    todoDueDate.textContent = todo.dueDate;
+    todoDueDate.textContent = format(todo.dueDate, 'dd/MM/yyyy');
     todoDueDate.classList.add('todo-due-date');
 
     const todoEditBtn = document.createElement('button');

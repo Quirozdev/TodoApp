@@ -7,6 +7,8 @@ const eventsHandler = (() => {
         document.addEventListener('projectcreated', (e) => {
             db.saveProject(e.detail.project);
             DOMHandler.displayProjects(db.getAllProjects());
+            // to auto select the newly created project
+            document.querySelector(`[data-project-id="${e.detail.project.id}"]`).click();
         });
 
         document.addEventListener('todocreated', (e) => {

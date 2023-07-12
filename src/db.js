@@ -58,12 +58,23 @@ class DB {
         this.updateDatabase();
     }
 
+    getAllPendingTodosInEachProject() {
+        const projectsCopy = [...this.getAllProjects()];
+        return projectsCopy.reduce((pendingTodosObj, currentProject) => {
+            const pendingTodos = currentProject.getPendingTodos();
+            if (pendingTodos.length !== 0) {
+                pendingTodosObj[currentProject.id] = pendingTodos;
+            }
+            return pendingTodosObj;
+        }, {});
+    }
+
     getAllCompletedTodosInEachProject() {
         const projectsCopy = [...this.getAllProjects()];
         return projectsCopy.reduce((completedTodosObj, currentProject) => {
             const completedTodos = currentProject.getCompletedTodos();
             if (completedTodos.length !== 0) {
-                completedTodosObj[currentProject.id] = currentProject.getCompletedTodos();
+                completedTodosObj[currentProject.id] = completedTodos;
             }
             return completedTodosObj;
         }, {});

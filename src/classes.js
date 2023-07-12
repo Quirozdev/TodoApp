@@ -1,10 +1,12 @@
+import { parseISO } from "date-fns";
+
 export class ToDo {
 
     constructor(id, title, description, dueDate, priority, completed, projectId) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.dueDate = dueDate;
+        this.dueDate = parseISO(dueDate);
         this.priority = priority;
         this.completed = completed;
         this.projectId = projectId;
@@ -32,6 +34,16 @@ export class Project {
 
     getTodos() {
         return this.todos;
+    }
+
+    getTodosForToday() {
+        return this.todos.filter(todo => {
+            return todo.dueDate
+        });
+    }
+
+    getPendingTodos() {
+        return this.todos.filter(todo => !todo.completed);
     }
 
     getCompletedTodos() {

@@ -1,6 +1,6 @@
 import { createLabelAndInput, createPrioritySelect, createFormButton } from "./addTodoFormComponent";
 import db from "./db";
-import { ToDo } from "./classes";
+import { format } from "date-fns";
 
 const editTodoEvent = (editTodoForm) => {
     editTodoForm.addEventListener('submit', (e) => {
@@ -43,7 +43,8 @@ const createEditTodoForm = (todo) => {
     todoDescInput.value = currentTodo.description;
 
     const [ todoDueDateLabel, todoDueDateInput ] = createLabelAndInput('Due Date', 'date', 'due-date', 'due-date', true);
-    todoDueDateInput.value = currentTodo.dueDate;
+    // to set the input date a value, the date need to be in the following format
+    todoDueDateInput.value = format(currentTodo.dueDate, 'yyyy-MM-dd');
     
     const priorityLabel = document.createElement('label');
     priorityLabel.textContent = 'Priority';
