@@ -1,18 +1,25 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('./fonts/Poppins/Poppins-Regular.ttf');
+}
+
 :root {
     --main-color-1: #172544;
     --main-color-2: #445a99;
+    --main-color-3: #d1d7e7;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 .app {
     display: grid;
     grid-template-columns: minmax(150px, 200px) 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 10vh 80vh 10vh;
     grid-template-areas: 
         "header  header  "
         "sidebar content "
@@ -22,11 +29,22 @@
 header {
     background-color: var(--main-color-1);
     grid-area: header;
+    color: var(--main-color-3);
+}
+
+header > h1 {
+    text-align: center;
 }
 
 .sidebar {
     background-color: var(--main-color-2);
     grid-area: sidebar;
+    overflow-y: auto;
+}
+
+.sidebar > h3 {
+    color: var(--main-color-3);
+    padding-left: 8px;
 }
 
 .filters, .projects-container, .projects {
@@ -43,11 +61,18 @@ header {
     margin: 4px 0;
 }
 
-#delete-this-project-btn {
-    background-color: #ff0f61;
+#add-todo-btn, #delete-this-project-btn  {
     display: flex;
     align-items: center;
     padding: 4px 8px;
+}
+
+#add-todo-btn {
+    background-color: #96ffd8;
+}
+
+#delete-this-project-btn {
+    background-color: #ff0f61;
 }
 
 #delete-this-project-btn:hover {
@@ -98,11 +123,16 @@ svg {
 .content {
     background-color: #8b99fa;
     grid-area: content;
+    overflow: auto;
 }
 
 .footer {
     background-color: var(--main-color-1);
     grid-area: footer;
+}
+
+.project-title {
+    text-align: center;
 }
 
 .todo-container {
@@ -217,4 +247,25 @@ svg {
 
 :disabled {
     opacity: 0.7;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--main-color-3);
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+}
+
+.github-icon {
+    fill: white;
+}
+
+.github-icon:hover {
+    fill: gray;
 }

@@ -20,7 +20,7 @@ const createAddTodoBtn = () => {
     addTodoBtn.addEventListener('click', function(e) {
         this.style.display = 'none'
         const addTodoForm = createAddTodoForm();
-        content.appendChild(addTodoForm);
+        this.after(addTodoForm);
     });
 
     addTodoBtn.appendChild(addTodoBtnSvg);

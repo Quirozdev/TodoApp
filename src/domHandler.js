@@ -83,6 +83,7 @@ const DOMHandler = (() => {
         const todosContainer = generateTodosContainer(todos, project.id);        
 
         const projectTitleElement = document.createElement('h2');
+        projectTitleElement.classList.add('project-title');
         projectTitleElement.textContent = project.name;
         
         content.appendChild(projectTitleElement);
