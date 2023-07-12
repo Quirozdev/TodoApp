@@ -1,5 +1,3 @@
-import { ToDo } from "./classes";
-
 const createLabelAndInput = (labelText, inputType, inputId, inputName, required) => {
     const label = document.createElement('label');
     label.textContent = labelText;

@@ -28,6 +28,15 @@ const DOMHandler = (() => {
         });
     });
 
+    const todayTodosBtn = document.getElementById('today-todos-btn');
+    todayTodosBtn.addEventListener('click', () => {
+        DOMHandler.clearContent();
+        const todayTodos = db.getTodayTodosInEachProject();
+        Object.keys(todayTodos).forEach(projectId => {
+            displayTodos(todayTodos[projectId], projectId);
+        });
+    })
+
     const pendingTodosBtn = document.getElementById('pending-todos-btn');
     pendingTodosBtn.addEventListener('click', () => {
         DOMHandler.clearContent();

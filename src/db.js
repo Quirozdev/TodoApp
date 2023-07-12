@@ -72,6 +72,17 @@ class DB {
         this.updateDatabase();
     }
 
+    getTodayTodosInEachProject() {
+        const projectsCopy = [...this.getAllProjects()];
+        return projectsCopy.reduce((todayTodosObj, currentProject) => {
+            const todayTodos = currentProject.getTodosForToday();
+            if (todayTodos.length !== 0) {
+                todayTodosObj[currentProject.id] = todayTodos;
+            }
+            return todayTodosObj;
+        }, {});
+    }
+
     getAllPendingTodosInEachProject() {
         const projectsCopy = [...this.getAllProjects()];
         return projectsCopy.reduce((pendingTodosObj, currentProject) => {

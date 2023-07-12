@@ -1,4 +1,4 @@
-import { parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 export class ToDo {
 
@@ -35,8 +35,9 @@ export class Project {
     }
 
     getTodosForToday() {
+        const currentDate = format(new Date(), 'yyyy-MM-dd');
         return this.todos.filter(todo => {
-            return todo.dueDate
+            return format(todo.dueDate, 'yyyy-MM-dd') === currentDate;
         });
     }
 
